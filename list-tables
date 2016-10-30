@@ -1,0 +1,32 @@
+List tables present in a database
+
+
+Problem Statement : List all the tables under retal_db on MySql server
+
+sqoop list-tables --connect jdbc:mysql://<fullyqualified host>/retail_db  --username <username> -P 
+
+(or)
+
+sqoop-list-tables --connect jdbc:mysql://<fullyqualified host>/retail_db  --username <username> -P
+
+This command request for password.
+
+if you use additional --verbose parameter 
+you will get following additional details in your output. 
+
+16/10/30 08:41:42 DEBUG sqoop.ConnFactory: Loaded manager factory: org.apache.sqoop.manager.oracle.OraOopManagerFactory
+16/10/30 08:41:42 DEBUG sqoop.ConnFactory: Loaded manager factory: com.cloudera.sqoop.manager.DefaultManagerFactory
+16/10/30 08:41:42 DEBUG sqoop.ConnFactory: Trying ManagerFactory: org.apache.sqoop.manager.oracle.OraOopManagerFactory
+16/10/30 08:41:42 DEBUG oracle.OraOopManagerFactory: Data Connector for Oracle and Hadoop can be called by Sqoop!
+16/10/30 08:41:42 DEBUG sqoop.ConnFactory: Trying ManagerFactory: com.cloudera.sqoop.manager.DefaultManagerFactory
+16/10/30 08:41:42 DEBUG manager.DefaultManagerFactory: Trying with scheme: jdbc:mysql:
+16/10/30 08:41:42 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+16/10/30 08:41:42 DEBUG sqoop.ConnFactory: Instantiated ConnManager org.apache.sqoop.manager.MySQLManager@2d2ffcb7
+16/10/30 08:41:42 DEBUG manager.SqlManager: No connection paramenters specified. Using regular API for making connection.
+
+
+Problem Statement : List all the table under SYSTEM user on Oracle Server:
+
+sqoop-list-tables --connect jdbc:oracle:thin:@localhost:1521/XE --username SYSTEM -P
+
+sqoop list-tables --connect jdbc:oracle:thin:@localhost:1521/XE --username <SYSTEM> -P
