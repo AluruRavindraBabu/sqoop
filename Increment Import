@@ -1,0 +1,6 @@
+--- Sqoop offer the ability to import incrementally (appending new data)...
+
+
+Usecase Statement 1 :
+A database table with an INTEGER primary key. 
+Appending new rows, and you need to periodically sync the table’s state to Hadoop for further processing
