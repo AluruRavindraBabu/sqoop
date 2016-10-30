@@ -1,0 +1,165 @@
+## Transferring the RDBMS data into Hadoop ecosystems. (HDFS, HIVE)
+### These codes are copied from Orielly book while I am learning...These are all only for learning purpose.. 
+### I recommend the book "Apache Sqoop Cookbook" .. You can read this book once to get good understanding on sqoop. 
+
+Use case statement 1:
+A table in a relational database (e.g., MySQL) by name "cities" and need to transfer the
+table’s contents into Hadoop’s Distributed File System (HDFS).
+
+Solution :
+
+Use sqoop import (OR) sqoop-import to achieve this. For more documentation refer the official documentation sqoop 1.4.6 user guide from apache website.
+https://sqoop.apache.org/docs/1.4.6/SqoopUserGuide.html#_purpose
+
+sqoop import \
+      --connect jdbc:mysql://mysqlhost/databasename \
+      --username sqoopuser  \
+      --password password \
+      --table cities 
+      
+
+Importing a table into HDFS from RDBMS is one of the usecase. 
+The above command will be generate a csv file and stored in to HDFS. Each row of a file is corresponding to each record in RDBMS table. 
+to inspect the file use "hadoop fs -cat cities/part-m-*"
+
+
+After execution what will happen?
+
+First,  Sqoop ---> connects --> database --> Fetch --> Meta data from tables ---> 
+At this point, Sqoop will create a Java Class and complie using JDK and hadoop libraries availble on system.
+Next, sqoop connect hadoop cluster --> submit Mapreduce Job.
+Each mapper of the job will then transfer a slice of the table’s data. As MapReduce executes multiple mappers at the same time,
+Sqoop will be transferring data in parallel to achieve the best possible performance by utilizing the potential of your database server.
+Each mapper transfers the table’s data directly between the database and the Hadoop cluster. 
+
+
+Usecase Statement 2: Include target directory for the above UCstatement1
+
+solution :
+
+ sqoop-import  \
+ --connect jdbc:mysql://mysqlhost/retail_db \
+ --username sqoopuser  \
+ --password password \
+ --table cities \
+ --target-dir /xxxx/xxxxx/sqoop/cities
+ 
+ sqoop-import \
+ --connect jdbc:mysql://mysqlhost/retail_db \
+ --username sqoopuser  \
+ --password password  \
+ --table cities  \
+ --warehouse-dir /xxxx/xxxxx/sqoop
+
+Usecase statement 3: 
+Instead of importing an entire table, transfer only a subset of the rows based on various conditions that express in the form of a 
+SQL statement with a WHERE clause.
+
+sqoop-import  \
+ --connect jdbc:mysql://mysqlhost/retail_db \
+ --username sqoopuser  \
+ --password password \
+ --table cities \
+ --warehouse-dir /xxxx/xxxxx/sqoop \
+ --where "country = 'USA'"
+ 
+ 
+ Usecase statement 4: Protect your password. 
+ 
+Solution: use -P instead --password:
+
+sqoop-import  \
+ --connect jdbc:mysql://mysqlhost/retail_db \
+ --username sqoopuser  \
+ --P \
+ --table cities \
+ --warehouse-dir /xxxx/xxxxx/sqoop \
+ --where "country = 'USA'"
+ 
+ Usecase statement 5:  Using a File Format Other Than CSV
+ 
+ sequence-file: 
+ sqoop-import  \
+ --connect jdbc:mysql://mysqlhost/retail_db \
+ --username sqoopuser  \
+ --password password  \
+ --table cities \
+ --warehouse-dir /xxxx/xxxx/sqoopsequence \
+ --as-sequencefile
+
+ sqoop-import  \
+ --connect jdbc:mysql://mysqlhost/retail_db \
+ --username sqoopuser  \
+ --password password  \
+ --table cities \
+ --warehouse-dir /xxxx/xxxx/sqoopsequence \
+ --as-avrodatafile
+
+
+ sqoop-import  \
+ --connect jdbc:mysql://mysqlhost/retail_db \
+ --username sqoopuser  \
+ --password password  \
+ --table cities \
+ --warehouse-dir /xxxx/xxxx/sqoopsequence \
+ --as-parquetfile
+ 
+ Usecase Statement 5: 
+ decrease the overall size occupied on HDFS by using compression for generated files.
+ 
+ Solution: use --compress
+ 
+ sqoop-import  \
+ --connect jdbc:mysql://mysqlhost/retail_db \
+ --username sqoopuser  \
+ --password password \
+ --table cities \
+ --warehouse-dir /xxxx/xxxxx/sqoop \
+ --compress
+ 
+ 
+ Usecase Statement 6: 
+ Speed up your import process
+ 
+ Solution : Use --direct 
+ sqoop-import  \
+ --connect jdbc:mysql://mysqlhost/retail_db \
+ --username sqoopuser  \
+ --password password \
+ --table cities \
+ --warehouse-dir /xxxx/xxxxx/sqoop \
+ --direct
+ 
+ 
+ Usecase Statement : 7
+ Sqoop by default uses four concurrent map tasks to transfer data to Hadoop. Transferring bigger tables with more concurrent tasks
+ should decrease the time required to transfer all data. You want the flexibility to change the number of map tasks used on a per-job basis.
+ 
+ Solution : 
+ 
+ --connect jdbc:mysql://mysqlhost/retail_db \
+ --username sqoopuser  \
+ --password password \
+ --table cities \
+ --warehouse-dir /xxxx/xxxxx/sqoop \
+ --num-mappers 6
+ 
+ Usecase Statement : 8
+ Sqoop encodes database NULL values using the null string constant. Your downstream processing (Hive queries, custom MapReduce job, or Pig script) uses a different constant
+for encoding missing values. override the default one.
+
+Solution : --null-string <null-string>	  The string to be written for a null value for string columns
+          --null-non-string <null-string>	The string to be written for a null value for non-string columns
+ 
+ --connect jdbc:mysql://mysqlhost/retail_db \
+ --username sqoopuser  \
+ --password password \
+ --table cities \
+ --warehouse-dir /xxxx/xxxxx/sqoop \
+ --num-mappers 6
+ --null-string '\\N'
+ --null-non-string '\\N'
+ 
+ 
+ 
+ 
