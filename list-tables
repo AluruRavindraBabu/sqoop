@@ -30,3 +30,9 @@ Problem Statement : List all the table under SYSTEM user on Oracle Server:
 sqoop-list-tables --connect jdbc:oracle:thin:@localhost:1521/XE --username SYSTEM -P
 
 sqoop list-tables --connect jdbc:oracle:thin:@localhost:1521/XE --username <SYSTEM> -P
+
+
+Example invocations from help : 
+$ sqoop list-tables --connect jdbc:postgresql://localhost/corp  --username name -P -- --schema payrolldept
+employees
+expenses
