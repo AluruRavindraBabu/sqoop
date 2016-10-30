@@ -1,0 +1,33 @@
+List Datases from RDBMS using Sqoop
+
+help URL : https://sqoop.apache.org/docs/1.4.6/SqoopUserGuide.html#_purpose_12
+
+Syntax : 
+
+$ sqoop list-databases (generic-args) (list-databases-args)
+$ sqoop-list-databases (generic-args) (list-databases-args)
+
+It lists all the database schemas which are present on the RDBMS server 
+
+Problem statement:  List database schemas available on a MySQL server 
+
+MySQL:
+sqoop-list-databases --connect jdbc:mysql://ip-172-31-13-154 --username sqoopuser -P
+
+sqoop list-databases --connect jdbc:mysql://ip-172-31-13-154 --username sqoopuser -P
+
+
+Problem Statement : List database schemas on Oracle server.  (For testing purpose used Oralce XE edition)
+
+Oracle: 
+
+sqoop list-databases --connect jdbc:oracle:thin:@localhost:1521/XE --username sqoopuser -P
+
+sqoop-list-databases --connect jdbc:oracle:thin:@localhost:1521/XE --username sqoopuser -P
+
+
+
+Example invocation: 
+$ sqoop list-databases --connect jdbc:mysql://database.example.com/
+information_schema
+employees
