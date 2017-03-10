@@ -1,0 +1,52 @@
+--Importing single tables to hdfs...
+Problem Statement: Import "orders" table from "retail_db" database in mysql server. Use destination directory as "/user/.../ravi/retail_db"
+
+Solution : We have to connect the database and provide table name and target directory.
+
+[--connect parameter uses the url of RDBMS (mysql, oracle...etc)
+
+sqoop import \
+--connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" \
+--username retail_dba \
+--password itversity \
+--table orders \
+--target-dir "/user/xxxtraining/ravi/retail_db" 
+
+
+sqoop import \
+--connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" \
+--username retail_dba \
+--password itversity \
+--table order_items \
+--target-dir "/user/xxxtraining/ravi/retail_db" 
+
+sqoop import \
+--connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" \
+--username retail_dba \
+--password itversity \
+--table departments \
+--target-dir "/user/xxxtraining/ravi/retail_db" 
+
+
+sqoop import \
+--connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" \
+--username retail_dba \
+--password itversity \
+--table categories \
+--target-dir "/user/xxxtraining/ravi/retail_db" 
+
+
+sqoop import \
+--connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" \
+--username retail_dba \
+--password itversity \
+--table customers \
+--target-dir "/user/xxxtraining/ravi/retail_db" 
+
+sqoop import \
+--connect "jdbc:mysql://nn01.itversity.com:3306/retail_db" \
+--username retail_dba \
+--password itversity \
+--table products \
+--target-dir "/user/xxxtraining/ravi/retail_db" 
+
